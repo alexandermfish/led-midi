@@ -1,6 +1,7 @@
-#!/usr/bin/env python3
+
 # Midi experimentation using neopixel library and mido
 # Author: Alex Fisher
+# note: install mido with sudo pip on rpi using GPIO
 
 
 
@@ -23,7 +24,16 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 # Define functions which animate LEDs in various ways.
 
-
+def midoTime():
+    
+    #print("mido time")
+    inport = mido.open_input('Arturia MINILAB:Arturia MINILAB MIDI 1 20:0')
+    
+    msg = inport.receive()
+    #time.sleep(2)
+    print(msg)
+    
+    
 
 def inputPixel(strip):
     pixAddr=0
@@ -34,19 +44,19 @@ def inputPixel(strip):
     try:
         pixAddr=int(raw_input("Input Which Pixel to Address"))
     except ValueError:
-        print "Not a number"
+        print("Not a number")
     try:
         redValue=int(raw_input('Input R:'))
     except ValueError:
-        print "Not a number"
+        print("Not a number")
     try:
         greenValue=int(raw_input('Input G:'))
     except ValueError:
-        print "Not a number"
+        print("Not a number")
     try:
         blueValue=int(raw_input('Input B:'))
     except ValueError:
-        print "Not a number"  
+        print("Not a number")  
     strip.setPixelColor(pixAddr,Color(greenValue,redValue,blueValue))
     strip.show()
     time.sleep(1/4)
@@ -77,7 +87,8 @@ if __name__ == '__main__':
     try:
 
         while True:
-            inputPixel(strip)
+            #inputPixel(strip)
+            midoTime()
 
     except KeyboardInterrupt:
         if args.clear:
