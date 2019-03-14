@@ -19,19 +19,25 @@ LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
 LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
+#MIDI CONTROLLER
+MIDI_CONTROLLER = 'Arturia MINILAB:Arturia MINILAB MIDI 1 20:0' #use mido.get_input_names() to get this
 
 
+inport = mido.open_input(MIDI_CONTROLLER)
 
 # Define functions which animate LEDs in various ways.
 
 def midoTime():
     
     #print("mido time")
-    inport = mido.open_input('Arturia MINILAB:Arturia MINILAB MIDI 1 20:0')
     
-    msg = inport.receive()
+    
+    msg = inport.poll()
+    if msg != None:
+        print(msg)
+        
     #time.sleep(2)
-    print(msg)
+    
     
     
 
