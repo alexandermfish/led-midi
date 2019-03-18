@@ -24,18 +24,22 @@ MIDI_CONTROLLER = 'Arturia MINILAB:Arturia MINILAB MIDI 1 20:0' #use mido.get_in
 
 
 inport = mido.open_input(MIDI_CONTROLLER)
+globalx = 0
 
 # Define functions which animate LEDs in various ways.
 
-def midoTime():
+def midoLed():
     
-    #print("mido time")
+    midiSignal = inport.poll()
+    if midiSignal != None:
+        print(midiSignal)
     
-    
-    msg = inport.poll()
-    if msg != None:
-        print(msg)
-        
+        if midiSignal.type == 'note_on':
+            print("note on!!")
+            strip.setPixelColor(0,Color(200,0,150))
+            strip.show()
+            
+            
     #time.sleep(2)
     
     
@@ -71,7 +75,7 @@ def clearStrip(strip):
     for i in range(strip.numPixels()):
         strip.setPixelColor(i, Color(0,0,0))
         strip.show()
-        time.sleep(40/1000.0) #40ms per light to clear  
+        time.sleep(40/1000.0) #40ms per light to clear  (for the neat effect, no other reason)
    
 
 # Main program logic follows:
@@ -94,7 +98,7 @@ if __name__ == '__main__':
 
         while True:
             #inputPixel(strip)
-            midoTime()
+            midoLed()
 
     except KeyboardInterrupt:
         if args.clear:
