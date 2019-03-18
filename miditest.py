@@ -21,30 +21,90 @@ LED_INVERT     = False   # True to invert the signal (when using NPN transistor 
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 #MIDI CONTROLLER
 MIDI_CONTROLLER = 'Arturia MINILAB:Arturia MINILAB MIDI 1 20:0' #use mido.get_input_names() to get this
-
+FIRST_NOTE = 48     #set the first note of your current midi controller in default octaves
+LAST_NOTE = 72      #set the last note of your current midi controller in default octaves (print midi msgs to get)
 
 inport = mido.open_input(MIDI_CONTROLLER)
 globalx = 0
+midiNotes = range(FIRST_NOTE, LAST_NOTE+1)
+lifeSpans = [0]*LED_COUNT #create a list of zeros to house lifespans of notes
+life = 5000 #set the lifespan
+
+
 
 # Define functions which animate LEDs in various ways.
 
 def midoLed():
+    global midiNotes
+    global lifeSpans
+    global life
     
-    midiSignal = inport.poll()
-    if midiSignal != None:
-        print(midiSignal)
+    midiSignal = inport.poll() #constantlly check if there is a midi message being recieved
+    # will constantly return None when no signal, so we need to avoid dealing in that realm with the following
+ 
+    #for loop is used to keep track of the remaining life of a LED after a keypress
+    for i in range(len(lifeSpans)):
+        if lifeSpans[i]>0:
+            lifeSpans[i] = lifeSpans[i] - 1
+            if lifeSpans[i] ==0:
+                strip.setPixelColor(i, Color(0,10,0))
+                strip.show()
+            if lifeSpans[i] ==4000:
+                strip.setPixelColor(i, Color(10,55,255))
+                strip.show()
+            if lifeSpans[i] ==3000:
+                strip.setPixelColor(i, Color(10,55,150))
+                strip.show()    
+            if lifeSpans[i] ==2000:
+                strip.setPixelColor(i, Color(10,55,100))
+                strip.show()    
+            if lifeSpans[i] ==1000:
+                strip.setPixelColor(i, Color(10,55,20))
+                strip.show()  
+            if lifeSpans[i] ==3500:
+                strip.setPixelColor(i, Color(30,55,170))
+                strip.show()
+            if lifeSpans[i] ==2500:
+                strip.setPixelColor(i, Color(20,55,120))
+                strip.show()    
+            if lifeSpans[i] ==1500:
+                strip.setPixelColor(i, Color(22,55,50))
+                strip.show()    
+            if lifeSpans[i] ==500:
+                strip.setPixelColor(i, Color(15,50,15))
+                strip.show() 
+
+       
+        
     
+    if midiSignal != None: 
+        
+        
         if midiSignal.type == 'note_on':
-            print("note on!!")
-            strip.setPixelColor(0,Color(200,0,150))
-            strip.show()
-            
+            print("note:" + str(midiSignal.note)) #diagnostics
+            for note in midiNotes:
+                if midiSignal.note == note: #check if any note being played exists in the array
+                    strip.setPixelColor(midiNotes.index(note), Color(255,255,255)) #map the pixel address to the note
+                    strip.show()
+                    
+
+        if midiSignal.type == 'note_off': 
+            print("note off:" + str(midiSignal.note)) #diagnostics
+            for note in midiNotes:
+                
+                currentIndex = midiNotes.index(note)
+                
+                if midiSignal.note == note:
+                    lifeSpans[currentIndex] = life
+                    print("LED/currentIndex:" + str(currentIndex))
+    
+    
             
     #time.sleep(2)
     
     
     
-
+#testing code, unused in final
 def inputPixel(strip):
     pixAddr=0
     redValue=0
@@ -75,7 +135,7 @@ def clearStrip(strip):
     for i in range(strip.numPixels()):
         strip.setPixelColor(i, Color(0,0,0))
         strip.show()
-        time.sleep(40/1000.0) #40ms per light to clear  (for the neat effect, no other reason)
+        time.sleep(40/1000.0) #40ms per light to clear  for the neat effect, no other reason
    
 
 # Main program logic follows:
