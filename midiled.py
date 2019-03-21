@@ -43,24 +43,19 @@ life = 4000 #set the lifespan
 ledColors = [[0]*LED_COUNT]*3
 
 
-defaultColor = Color(50/20, 255/20, 30/20) #set this to a constant of your choice or the Color function
+defaultColor = Color(20/20, 255/20, 70/20) #set this to a constant of your choice or the Color function
 randR = 0
 randG = 0  
 randB = 0
 
 # Define functions which animate LEDs in various ways.
 
-def midoLed():
-    global midiNotes
-    global lifeSpans
-    global life
-    global randB
-    global randR
-    global randG
-    
-    midiSignal = inport.poll() #constantlly check if there is a midi message being recieved
-    
- 
+
+
+
+def fadeOut(red,green,blue):
+    global randG #seperate the random vals so they are more random
+    randG= random.randint(0,255)
     #for loop is used to keep track of the remaining life of a LED after a keypress
     for i in range(len(lifeSpans)):
         
@@ -75,172 +70,187 @@ def midoLed():
             
             elif lifeSpans[i] == ((life/20)*19):
                 
-                intR = int(float(randR)*0.95)
-                intG = int(float(randG)*0.95)
-                intB = int(float(randB)*0.95)
+                intR = int(float(red)*0.95)
+                intG = int(float(green)*0.95)
+                intB = int(float(blue)*0.95)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*18):
                 
-                intR = int(float(randR)*0.90)
-                intG = int(float(randG)*0.90)
-                intB = int(float(randB)*0.90)
+                intR = int(float(red)*0.90)
+                intG = int(float(green)*0.90)
+                intB = int(float(blue)*0.90)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*17):
                 
-                intR = int(float(randR)*0.85)
-                intG = int(float(randG)*0.85)
-                intB = int(float(randB)*0.85)
+                intR = int(float(red)*0.85)
+                intG = int(float(green)*0.85)
+                intB = int(float(blue)*0.85)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
                 
             elif lifeSpans[i] == ((life/20)*16):
                 
-                intR = int(float(randR)*0.80)
-                intG = int(float(randG)*0.80)
-                intB = int(float(randB)*0.80)
+                intR = int(float(red)*0.80)
+                intG = int(float(green)*0.80)
+                intB = int(float(blue)*0.80)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
                 
             elif lifeSpans[i] == ((life/20)*15):
                 
-                intR = int(float(randR)*0.75)
-                intG = int(float(randG)*0.75)
-                intB = int(float(randB)*0.75)
+                intR = int(float(red)*0.75)
+                intG = int(float(green)*0.75)
+                intB = int(float(blue)*0.75)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*14):
                 
-                intR = int(float(randR)*0.70)
-                intG = int(float(randG)*0.70)
-                intB = int(float(randB)*0.70)
+                intR = int(float(red)*0.70)
+                intG = int(float(green)*0.70)
+                intB = int(float(blue)*0.70)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*13):
                 
-                intR = int(float(randR)*0.65)
-                intG = int(float(randG)*0.65)
-                intB = int(float(randB)*0.65)
+                intR = int(float(red)*0.65)
+                intG = int(float(green)*0.65)
+                intB = int(float(blue)*0.65)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*12):
                 
-                intR = int(float(randR)*0.60)
-                intG = int(float(randG)*0.60)
-                intB = int(float(randB)*0.60)
+                intR = int(float(red)*0.60)
+                intG = int(float(green)*0.60)
+                intB = int(float(blue)*0.60)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*11):
                 
-                intR = int(float(randR)*0.55)
-                intG = int(float(randG)*0.55)
-                intB = int(float(randB)*0.55)
+                intR = int(float(red)*0.55)
+                intG = int(float(green)*0.55)
+                intB = int(float(blue)*0.55)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*10):
                 
-                intR = int(float(randR)*0.50)
-                intG = int(float(randG)*0.50)
-                intB = int(float(randB)*0.50)
+                intR = int(float(red)*0.50)
+                intG = int(float(green)*0.50)
+                intB = int(float(blue)*0.50)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*9):
                 
-                intR = int(float(randR)*0.45)
-                intG = int(float(randG)*0.45)
-                intB = int(float(randB)*0.45)
+                intR = int(float(red)*0.45)
+                intG = int(float(green)*0.45)
+                intB = int(float(blue)*0.45)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*8):
                 
-                intR = int(float(randR)*0.40)
-                intG = int(float(randG)*0.40)
-                intB = int(float(randB)*0.40)
+                intR = int(float(red)*0.40)
+                intG = int(float(green)*0.40)
+                intB = int(float(blue)*0.40)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*7):
                 
-                intR = int(float(randR)*0.35)
-                intG = int(float(randG)*0.35)
-                intB = int(float(randB)*0.35)
+                intR = int(float(red)*0.35)
+                intG = int(float(green)*0.35)
+                intB = int(float(blue)*0.35)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*6):
                 
-                intR = int(float(randR)*0.30)
-                intG = int(float(randG)*0.30)
-                intB = int(float(randB)*0.30)
+                intR = int(float(red)*0.30)
+                intG = int(float(green)*0.30)
+                intB = int(float(blue)*0.30)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*5):
                 
-                intR = int(float(randR)*0.25)
-                intG = int(float(randG)*0.25)
-                intB = int(float(randB)*0.25)
+                intR = int(float(red)*0.25)
+                intG = int(float(green)*0.25)
+                intB = int(float(blue)*0.25)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*4):
                 
-                intR = int(float(randR)*0.2)
-                intG = int(float(randG)*0.2)
-                intB = int(float(randB)*0.2)
+                intR = int(float(red)*0.2)
+                intG = int(float(green)*0.2)
+                intB = int(float(blue)*0.2)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*3):
                 
-                intR = int(float(randR)*0.15)
-                intG = int(float(randG)*0.15)
-                intB = int(float(randB)*0.15)
+                intR = int(float(red)*0.15)
+                intG = int(float(green)*0.15)
+                intB = int(float(blue)*0.15)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*2):
                 
-                intR = int(float(randR)*0.1)
-                intG = int(float(randG)*0.1)
-                intB = int(float(randB)*0.1)
+                intR = int(float(red)*0.1)
+                intG = int(float(green)*0.1)
+                intB = int(float(blue)*0.1)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
             elif lifeSpans[i] == ((life/20)*1):
                 
-                intR = int(float(randR)*0.05)
-                intG = int(float(randG)*0.05)
-                intB = int(float(randB)*0.05)
+                intR = int(float(red)*0.05)
+                intG = int(float(green)*0.05)
+                intB = int(float(blue)*0.05)
 
                 strip.setPixelColor(i, Color(intG,intR,intB))
                 strip.show()
                 
                    
-  
-       
-        
+
+
+
+
+
+
+
+
+def midoLed():
+    global midiNotes
+    global lifeSpans
+    global life
+    global randB
+    global randR
+    global randG
+    
+    midiSignal = inport.poll() #constantlly check if there is a midi message being recieved
+    randB= random.randint(0,255)
+    
+    randR = random.randint(0,255)
     # will constantly return None when no signal, so we need to avoid dealing in that realm with the following
     if midiSignal != None: 
         
         
         if midiSignal.type == 'note_on':
-            randB= random.randint(0,255)
-            randG= random.randint(0,255)
-            randR = random.randint(0,255)
-            print("Random RGB: " + str(randR) + ", " + str(randG) + ", "+ str(randG))
+
+            print("Random RGB: " + str(randR) + ", " + str(randG) + ", "+ str(randB))
             print("note:" + str(midiSignal.note)) #diagnostics
             for note in midiNotes:
                 if midiSignal.note == note: #check if any note being played exists in the array
@@ -261,17 +271,17 @@ def midoLed():
 
 #for coloring the whole strip on initialization
 def colorStrip(strip): 
-    global violet
+    global defaultColor
     for i in range(strip.numPixels()):
         strip.setPixelColor(i, defaultColor) #GRB ordering for some reason (could be my wiring mistake?)
         strip.show()
-        time.sleep(40/1000.0) #40ms per light to color for the neat effect, no other reason    
+        time.sleep(20/1000.0) #20ms per light to color for the neat effect, no other reason    
 
 def clearStrip(strip):
-    for i in range(strip.numPixels()):
+    for i in reversed(range(strip.numPixels())):
         strip.setPixelColor(i, Color(0,0,0))
         strip.show()
-        time.sleep(40/1000.0) #40ms per light to clear  for the neat effect, no other reason
+        time.sleep(20/1000.0) #20ms per light to clear  for the neat effect, no other reason
    
 
 # Main program logic follows:
@@ -295,6 +305,7 @@ if __name__ == '__main__':
         while True:
             #inputPixel(strip)
             midoLed()
+            fadeOut(randR,randG,randB)
 
     except KeyboardInterrupt:
         if args.clear:
