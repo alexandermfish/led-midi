@@ -39,26 +39,30 @@ inport = mido.open_input(MIDI_CONTROLLER)
 globalx = 0
 midiNotes = range(FIRST_NOTE, LAST_NOTE+1)
 lifeSpans = [0]*LED_COUNT #create a list of LED_COUNT 0s to house lifeSpans of notes
-life = 4000 #set the lifespan
-ledColors = [[0]*LED_COUNT]*3
+life = 1700 #set the lifespan
+ledColors = [[0]*3]*LED_COUNT
 
 
 defaultColor = Color(20/20, 255/20, 70/20) #set this to a constant of your choice or the Color function
-randR = 0
-randG = 0  
-randB = 0
+colorCycle = 1
+darkness=20
+r = 0
+b = 0
+g = 0
+mode = "simple"
 
 # Define functions which animate LEDs in various ways.
 
 
 
 
-def fadeOut(red,green,blue):
-    global randG #seperate the random vals so they are more random
-    randG= random.randint(0,255)
+def fadeOut(r,g,b):
+
     #for loop is used to keep track of the remaining life of a LED after a keypress
     for i in range(len(lifeSpans)):
-        
+        red = r
+        green = g
+        blue= b
         
         if lifeSpans[i]>0:
            
@@ -229,45 +233,138 @@ def fadeOut(red,green,blue):
 
 
 
+def midiPolling():
+    midi = inport.poll() #constantlly check if there is a midi message being recieved
+    return midi
 
+def checkChangeMode(midiSignal):
+    global mode
+    global defaultColor
+    global life
+    global colorCycle
+    global darkness
+    global midiNotes
+    
+    if midiSignal != None:
+        if midiSignal.type == 'note_on':
+            red = Color(0,255/darkness,0)
+            green = Color(255/darkness,0,0)
+            blue = Color(0,0,255/darkness)
+            yellow = Color(190/darkness,255/darkness,0)
+            cyan = Color(255/darkness,0,255/darkness)
+            purple = Color(0,255/darkness,155/darkness)
 
+            
+            if MIDI_CONTROLLER == 'Arturia MINILAB:Arturia MINILAB MIDI 1 20:0':
 
-def midoLed():
+                    
+                if midiSignal.note == 36:
+                    print("Mode: Simple")
+                    mode = "simple"
+                elif midiSignal.note == 37:
+                    print("Mode: Random")
+                    #mode = "random"
+                elif midiSignal.note == 38:
+                    print("Control: Lengthen Fade")
+                    life = life + 500
+
+                elif midiSignal.note == 39:
+                    print("Control: Shorten Fade")
+                    if life>500:
+                        life = life - 500
+
+                elif midiSignal.note == 40:
+                    print("Control: Change Color")
+                    colorCycle +=1
+                    if colorCycle == 1:
+                        defaultColor = red
+                        print("Red")
+                    elif colorCycle == 2:
+                        defaultColor = green
+                        print("Green")
+                    elif colorCycle == 3:
+                        defaultColor = blue
+                        print("Blue")
+                    elif colorCycle == 4:
+                        defaultColor = yellow
+                        print("Orange/Yellow")
+                    elif colorCycle == 5:
+                        defaultColor = cyan
+                        print("Cyan")
+                    elif colorCycle == 6:
+                        defaultColor = purple
+                        print("Purple")
+                    elif colorCycle ==7:
+                        colorCycle = 0
+                        
+                    for note in midiNotes:
+                        strip.setPixelColor(midiNotes.index(note), defaultColor) #map the pixel address to the note
+                        strip.show()
+                        
+                        
+                elif midiSignal.note == 42:
+                    print("Control: Brighten BG")
+                    if darkness>3:
+                        darkness = darkness-3
+                    else:
+                        print("Max brightness")
+                    
+                    for note in midiNotes:
+                        strip.setPixelColor(midiNotes.index(note), defaultColor) #map the pixel address to the note
+                        strip.show()
+
+                elif midiSignal.note == 41:
+                    print("Control: Dim BG")
+                    darkness = darkness+3
+                    for note in midiNotes:
+                        strip.setPixelColor(midiNotes.index(note), defaultColor) #map the pixel address to the note
+                        strip.show()
+
+                elif midiSignal.note == 43:
+                    pass
+        
+
+def midoLed(midiSignal):
     global midiNotes
     global lifeSpans
     global life
-    global randB
-    global randR
-    global randG
+    global r
+    global g
+    global b
+    global mode
+
     
-    midiSignal = inport.poll() #constantlly check if there is a midi message being recieved
-    randB= random.randint(0,255)
+
     
-    randR = random.randint(0,255)
     # will constantly return None when no signal, so we need to avoid dealing in that realm with the following
     if midiSignal != None: 
-        
-        
-        if midiSignal.type == 'note_on':
 
-            print("Random RGB: " + str(randR) + ", " + str(randG) + ", "+ str(randB))
-            print("note:" + str(midiSignal.note)) #diagnostics
-            for note in midiNotes:
-                if midiSignal.note == note: #check if any note being played exists in the array
 
-                    strip.setPixelColor(midiNotes.index(note), Color(randG,randR,randB)) #map the pixel address to the note
-                    strip.show()
+        
+        if mode == "simple":
+            if midiSignal.type == 'note_on':
+
+                print("note on: " + str(midiSignal.note)) #diagnostics
+                for note in midiNotes:
+      
+                    if midiSignal.note == note: #check if any note being played exists in the array
+                        r = 255
+                        g = 200
+                        b = 0
+
+                        strip.setPixelColor(midiNotes.index(note), Color(g,r,b )) #map the pixel address to the note
+                        strip.show()
+                        
+                        
+            if midiSignal.type == 'note_off':
+                print("note off: " + str(midiSignal.note)) #diagnostics
+                for note in midiNotes:
+                    currentIndex = midiNotes.index(note)
                     
+                    if midiSignal.note == note:
+                        lifeSpans[currentIndex] = life
+                        print("LED/currentIndex:" + str(currentIndex))
 
-        if midiSignal.type == 'note_off': 
-            print("note off:" + str(midiSignal.note)) #diagnostics
-            for note in midiNotes:
-                
-                currentIndex = midiNotes.index(note)
-                
-                if midiSignal.note == note:
-                    lifeSpans[currentIndex] = life
-                    print("LED/currentIndex:" + str(currentIndex))
 
 #for coloring the whole strip on initialization
 def colorStrip(strip): 
@@ -301,11 +398,15 @@ if __name__ == '__main__':
         print('Use "-c" argument to clear LEDs on exit')
 
     try:
+        print(ledColors)
         colorStrip(strip)
         while True:
             #inputPixel(strip)
-            midoLed()
-            fadeOut(randR,randG,randB)
+            midiInput=midiPolling()
+            midoLed(midiInput)
+            checkChangeMode(midiInput)
+            
+            fadeOut(r,g,b)
 
     except KeyboardInterrupt:
         if args.clear:
