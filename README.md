@@ -13,3 +13,7 @@ ENSURE all pip dependency installs are done using sudo. This is because using th
 ### To do:
 
 - additionally send the midi to a DAW to generate sounds (external computer)
+
+
+## Demo
+![](demo.gif)
